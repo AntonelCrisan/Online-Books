@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Input from "../Components/Input";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-const Navbar = () => {
+const Navbar = ({onSearch}) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const handleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const location =  useLocation();
-  if(location === "/login") return null;
+  const handleSearch = (event) => {
+    onSearch(event.target.value);
+  };
   return (
-    <nav className="bg-white p-3 border-b-2 shadow-md">
+    <nav className="bg-white p-3 border-b-2 shadow-md fixed w-full">
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <Link to="/home" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img src={require("../icons/logo.png")} alt="logo" className="w-7" />
           <span className="text-blue-600 font-semibold text-2xl ml-2">
             Online Books
@@ -40,7 +40,9 @@ const Navbar = () => {
             placeholder="Search book"
             required={false}
             autoComplete="off"
+            onChange={handleSearch}
           />
+        
         </div>
         <div className="hidden md:flex md:items-center">
           <div className="flex justify-between">
@@ -52,7 +54,7 @@ const Navbar = () => {
               />
               <span className="ml-2">My account</span>
             </Link>
-            <Link className="flex items-center ml-4">
+            <Link className="flex items-center ml-4 pl-5">
               <img
                 src={require("../icons/heart_icon.png")}
                 alt="user"
@@ -60,7 +62,7 @@ const Navbar = () => {
               />
               <span className="ml-2">Favorites</span>
             </Link>
-            <Link className="flex items-center ml-4">
+            <Link className="flex items-center ml-4 pl-5">
               <img
                 src={require("../icons/basket_icon.png")}
                 alt="user"
@@ -80,6 +82,7 @@ const Navbar = () => {
             placeholder="Search book"
             required={false}
             autoComplete="off"
+            onChange={handleSearch}
           />
           <Link to="/signin" className="mt-4 flex border-b-2">
             <img

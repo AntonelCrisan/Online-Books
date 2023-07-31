@@ -4,37 +4,20 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckIcon from "@mui/icons-material/Check";
+import Validation from "../Components/LoginValidation";
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-
-  const validEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-  const validPassword = (password) => {
-    return password.length;
-  };
-  const handleChangePassword = (event) => {
-    if (validPassword(event.target.value) < 7) {
-      setIsValidPassword(false);
-    } else {
-      setIsValidPassword(true);
-    }
-    setPassword(event.target.value);
-  };
-  const handleChangeEmail = (event) => {
-    if (validEmail(event.target.value)) {
-      setIsValidEmail(true);
-    } else {
-      setIsValidEmail(false);
-    }
-    setEmail(event.target.value);
-  };
+  const [data, setData] = useState({ email: "", password: "" });
+  const [error, setError] = useState({});
+  const handleSubmit = (event) => {
+    event.preventDefault();
+   setError(Validation(data));
+  }
+  const handleInput = (event) => {
+    setData(prev => ({...prev, [event.target.name]: [event.target.value]}));
+  }
   return (
     <div className="flex flex-col items-center justify-center py-20">
-      <Link to="/home" className="flex items-center justify-center">
+      <Link to="/" className="flex items-center justify-center">
         <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
         <span className="text-blue-600 font-semibold text-4xl ml-2">
           Online Books
@@ -54,9 +37,10 @@ export default function SignInPage() {
               required
               autoComplete="on"
               placeholder="name@company.com"
-              onChange={handleChangeEmail}
+              onChange={handleInput}
             />
-            {isValidEmail ? (
+
+            {error ? (
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <CheckIcon className="h-5 w-5 text-green-400" />
               </div>
@@ -66,6 +50,9 @@ export default function SignInPage() {
               </div>
             )}
           </div>
+          {error && (
+            <span className="text-red-400">{error}</span>
+          )}
           <div className="pt-5">
             <label className="block mb-2 ">Password</label>
             <div className="relative">
@@ -75,35 +62,29 @@ export default function SignInPage() {
                 required
                 autoComplete="on"
                 placeholder="••••••••"
-                onChange={handleChangePassword}
+                onChange={handleInput}
               ></Input>
-              {isValidPassword ? (
+              {error ? (
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <CheckIcon className="h-5 w-5 text-green-400" />
                 </div>
               ) : (
-                <div>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400"/>
-            
-                  </div>
-                
-                  <p className="text-red-400 text-l pt-5">
-                    The password have to contain least 7 characters
-                  </p>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                  <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
                 </div>
               )}
             </div>
+            {error && (<span className="text-red-400">{error}</span>)}
           </div>
-
           <div class="flex items-center justify-between pt-5">
             <div className="flex items-start">
               <div className="flex items-center h-5">
-                <Input
+                <input
                   id="remember"
                   aria-describedby="remember"
                   type="checkbox"
                   required
+                  className="cursor-pointer"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -118,13 +99,13 @@ export default function SignInPage() {
             </a>
           </div>
           <div className="pt-5">
-            <Button text={`Sign in`} />
+            <Button text={`Sign in`} onClick={handleSubmit} />
           </div>
-          <div className="flex justify-between pt-5 pb-10">
+          <div className="flex pt-5 pb-10">
             <p>Need an account?</p>
             <Link
               to="/signup"
-              className="font-semibold hover:underline hover:text-blue-600"
+              className="font-semibold hover:underline hover:text-blue-600 pl-2"
             >
               Sign up
             </Link>
