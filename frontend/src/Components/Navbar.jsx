@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Input from "../Components/Input";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-const Navbar = ({onSearch}) => {
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+const Navbar = ({ onSearch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleMenu = () => {
     setIsOpen(!isOpen);
@@ -11,7 +14,7 @@ const Navbar = ({onSearch}) => {
     onSearch(event.target.value);
   };
   return (
-    <nav className="bg-white p-3 border-b-2 shadow-md fixed w-full">
+    <nav className="bg-white p-3 border-b-2 shadow-md fixed w-full z-30">
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -42,33 +45,23 @@ const Navbar = ({onSearch}) => {
             autoComplete="off"
             onChange={handleSearch}
           />
-        
         </div>
         <div className="hidden md:flex md:items-center">
           <div className="flex justify-between">
-            <Link to="/signin" className="flex items-center ml-4">
-              <img
-                src={require("../icons/user_icon.png")}
-                alt="user"
-                className="w-6"
-              />
-              <span className="ml-2">My account</span>
+            <Link
+              to="/signin"
+              className="flex items-center ml-4 hover:bg-slate-100 rounded-xl p-2"
+            >
+              <PermIdentityIcon className="text-blue-600" />
+              <span className="ml-2 group/item ">My account</span>
             </Link>
-            <Link className="flex items-center ml-4 pl-5">
-              <img
-                src={require("../icons/heart_icon.png")}
-                alt="user"
-                className="w-6"
-              />
-              <span className="ml-2">Favorites</span>
+            <Link className="flex items-center ml-4  hover:bg-slate-100 rounded-xl p-2">
+              <FavoriteBorderIcon className="text-blue-600" />
+              <span className="ml-2 ">Favorites</span>
             </Link>
-            <Link className="flex items-center ml-4 pl-5">
-              <img
-                src={require("../icons/basket_icon.png")}
-                alt="user"
-                className="w-6"
-              />
-              <span className="ml-2">My basket</span>
+            <Link className="flex items-center ml-4  hover:bg-slate-100 rounded-xl p-2">
+              <ShoppingCartOutlinedIcon className="text-blue-600" />
+              <span className="ml-2 ">My basket</span>
             </Link>
           </div>
         </div>
@@ -84,28 +77,19 @@ const Navbar = ({onSearch}) => {
             autoComplete="off"
             onChange={handleSearch}
           />
-          <Link to="/signin" className="mt-4 flex border-b-2">
-            <img
-              src={require("../icons/user_icon.png")}
-              alt="user"
-              className="w-6"
-            />
-            <span className="ml-2">My account</span>
+          <Link
+            to="/signin"
+            className="mt-4 flex border-b-2 hover:bg-slate-100  p-2"
+          >
+            <PermIdentityIcon className="text-blue-600" />
+            <span className="ml-2 ">My account</span>
           </Link>
-          <Link className="flex mt-4 border-b-2">
-            <img
-              src={require("../icons/heart_icon.png")}
-              alt="user"
-              className="w-6"
-            />
+          <Link className="flex mt-4 border-b-2 hover:bg-slate-100  p-2">
+            <FavoriteBorderIcon className="text-blue-600" />
             <span className="ml-2">Favorites</span>
           </Link>
-          <Link className="flex mt-4 border-b-2">
-            <img
-              src={require("../icons/basket_icon.png")}
-              alt="user"
-              className="w-6"
-            />
+          <Link className="flex mt-4 border-b-2 hover:bg-slate-100  p-2">
+            <ShoppingCartOutlinedIcon className="text-blue-600" />
             <span className="ml-2">My basket</span>
           </Link>
         </div>

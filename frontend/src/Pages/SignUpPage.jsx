@@ -1,62 +1,38 @@
 import Input from "../Components/Input";
 import Button from "../Components/Button";
-import { Link } from "react-router-dom";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Link, useNavigate } from "react-router-dom";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
+import Validation from "../Components/InputsValidation";
+import axios from "axios";
 export default function SignUpPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setrepeatPassword] = useState("");
-  const [validateName, setValidateName] = useState(false);
-  const [validateEmail, setValidateEmail] = useState(false);
-  const [validatePassword, setValidatePassword] = useState(false);
-  const [validateRepPassword, setValidateRepPassword] = useState(false);
- 
-  const isValidName = (name) => {
-    return name.length;
-  };
-  const handleName = (event) => {
-    if (isValidName(event.target.value) > 0) {
-      return setValidateName(true);
-    } else {
-      return setValidateName(false);
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState({});
+  const [registerStatus, setRegisterStatus] = useState("");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("http://localhost:8080/signup", data).then((res) => {
+        if (res.data.message) {
+          setRegisterStatus(res.data.message);
+        } else {
+          console.log("Account created successfully!");
+          navigate("/signin");
+        }
+      });
+    } catch (error) {
+      console.log("Error: ", error);
     }
-    setName(event.target.value);
   };
-  const isValidEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-  const handleEmail = (event) => {
-    if (isValidEmail(event.target.value)) {
-      setValidateEmail(true);
-    } else {
-      setValidateEmail(false);
-    }
-    setEmail(event.target.value);
-  };
-  const isValidPassword = (password) => {
-    return password.length;
-  };
-  const handlePassword = (event) => {
-    if (isValidPassword(event.target.value) <= 7) {
-      setValidatePassword(false);
-    } else {
-      setValidatePassword(true);
-    }
-    setPassword(event.target.value);
-  };
-  const isValidRepPassword = (repeatPassword) => {
-    return repeatPassword.length;
-  };
-  const handleRepPassword = (event) => {
-    if (isValidRepPassword(event.target.value) <= 7) {
-      setValidateRepPassword(false);
-    } else {
-      setValidateRepPassword(true);
-    }
-    setrepeatPassword(event.target.value);
+  const handleInput = (field, value) => {
+    const newData = { ...data, [field]: value };
+    setData(newData);
+    setError(Validation(data));
   };
   return (
     <div>
@@ -78,19 +54,22 @@ export default function SignUpPage() {
               <div className="relative">
                 <Input
                   type="text"
-                  name="lname"
-                  required = {true}
+                  name="name"
+                  required={true}
                   autoComplete="on"
                   placeholder="Tom Cruise"
-                  onChange={handleName}
+                  onChange={(e) => handleInput(e.target.name, e.target.value)}
                 ></Input>
-                {validateName ? (
+                {error.name === true ? (
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                     <CheckIcon className="h-5 w-5 text-green-400" />
                   </div>
                 ) : (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
+                  <div>
+                    {" "}
+                    {error.name && (
+                      <span className="text-red-400">{error.name}</span>
+                    )}
                   </div>
                 )}
               </div>
@@ -101,18 +80,21 @@ export default function SignUpPage() {
                 <Input
                   type="email"
                   name="email"
-                  required = {true}
+                  required={true}
                   autoComplete="on"
                   placeholder="name@company.com"
-                  onChange={handleEmail}
+                  onChange={(e) => handleInput(e.target.name, e.target.value)}
                 ></Input>
-                {validateEmail ? (
+                {error.email === true ? (
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                     <CheckIcon className="h-5 w-5 text-green-400" />
                   </div>
                 ) : (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
+                  <div>
+                    {" "}
+                    {error.email && (
+                      <span className="text-red-400">{error.email}</span>
+                    )}
                   </div>
                 )}
               </div>
@@ -123,46 +105,30 @@ export default function SignUpPage() {
                 <Input
                   type="password"
                   name="password"
-                  required = {true}
+                  required={true}
                   autoComplete="on"
                   placeholder="••••••••"
-                  onChange={handlePassword}
+                  onChange={(e) => handleInput(e.target.name, e.target.value)}
                 ></Input>
-                {validatePassword ? (
+                {error.password === true ? (
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                     <CheckIcon className="h-5 w-5 text-green-400" />
                   </div>
                 ) : (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
+                  <div>
+                    {" "}
+                    {error.password && (
+                      <span className="text-red-400">{error.password}</span>
+                    )}
                   </div>
                 )}
               </div>
             </div>
-            <div className="pb-5">
-              <label className="block mb-2 ">Repeat password</label>
-              <div className="relative">
-                <Input
-                  type="password"
-                  name="password"
-                  required = {true}
-                  autoComplete="on"
-                  placeholder="••••••••"
-                  onChange={handleRepPassword}
-                ></Input>
-                {validateRepPassword && validatePassword ? (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <CheckIcon className="h-5 w-5 text-green-400" />
-                  </div>
-                ) : (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="pb-5">
-              <Button text={`Sign up`} required = {true}/>
+            <span className="text-red-400  flex justify-center">
+              {registerStatus}
+            </span>
+            <div className="pb-5 pt-5">
+              <Button text={`Sign up`} onClick={handleSubmit} />
             </div>
             <div className="flex pb-10">
               <p>Already have an account?</p>

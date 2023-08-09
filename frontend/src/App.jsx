@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import SignInPage from "./Pages/SignInPage";
 import SignUpPage from "./Pages/SignUpPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
+import ResetPasswordLinkPage from "./Pages/ResetPasswordLinkPage";
 export default function App() {
   return (
     <div>
@@ -10,8 +11,9 @@ export default function App() {
         <Routes>
           <Route path="" element={<HomePage />} />
           <Route path="/signin" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/signup" element={<SignUpPage/>} />
           <Route path="/reset" element={<ResetPasswordPage />} />
+          <Route path="/reset_password_link" element={<ResetPasswordLinkPage />} />
         </Routes>
       </Router>
     </div>

@@ -1,178 +1,118 @@
 import { Link } from "react-router-dom";
 import Button from "../Components/Button";
 import Input from "../Components/Input";
-import { useState } from "react";
+import React, { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-export default function ResetPasswordPae() {
-  const [email, setEmail] = useState("");
-  const [isValid, setIsValid] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const isValidEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-  const handleChange = (event) => {
-    if (isValidEmail(event.target.value)) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Validation from "../Components/InputsValidation";
+import axios from "axios";
+export default function ResetPasswordPae({getEmail}) {
+  const [data, setData] = useState({ email: "" });
+  const [error, setError] = useState({});
+  const [resetStatus, setResetStatus] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("http://localhost:8080/reset", data).then((res) => {
+        if (res.data.message) {
+          setResetStatus(res.data.message);
+        } else {
+          setShowPopup(true);
+        }
+      });
+    } catch (error) {
+      console.log("Error: ", error);
     }
-    setEmail(event.target.value);
   };
-  const handleReset = () => {
-    setShowMessage(true);
+  const handleInput = (field, value) => {
+    const newData = { ...data, [field]: value };
+    setData(newData);
+    setError(Validation(data));
   };
   return (
-    <div className="flex flex-col items-center justify-center">
-      {!isValid ? (
-        <div className="flex flex-col items-center justify-center py-20">
-          <Link to="/" className="flex items-center justify-center">
-            <img
-              src={require("../icons/logo.png")}
-              alt="logo"
-              className="w-10"
+    <div className="flex flex-col items-center justify-center py-20">
+      <Link to="/" className="flex items-center justify-center">
+        <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
+        <span className="text-blue-600 font-semibold text-4xl ml-2">
+          Online Books
+        </span>
+      </Link>
+      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <h1 className="text-2xl font-semibold flex justify-center pb-5">
+            Reset password
+          </h1>
+          <h1 className="pb-5 ">
+            If the account exists, we'll email you instructions to reset the
+            password.
+          </h1>
+          <label className="block mb-2">Email</label>
+          <div className="relative">
+            <Input
+              type="email"
+              name="email"
+              required
+              autoComplete="on"
+              placeholder="name@company.com"
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
             />
-            <span className="text-blue-600 font-semibold text-4xl ml-2">
-              Online Books
-            </span>
-          </Link>
 
-          <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <h1 className="text-2xl font-semibold flex justify-center pb-5">
-                Reset your password
-              </h1>
-              <p className="pb-5">
-                If the account exists, we'll email you instructions to reset the
-                password.
-              </p>
-              <label className="block mb-2 ">Your email</label>
-              <div className="relative">
-                <Input
-                  type="email"
-                  name="email"
-                  required
-                  autoComplete="on"
-                  placeholder="name@domain.com"
-                  onChange={handleChange}
-                ></Input>
-                {isValid ? (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <CheckIcon className="h-5 w-5 text-green-400" />
-                  </div>
-                ) : (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
-                  </div>
+            {error.email === true ? (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <CheckIcon className="h-5 w-5 text-green-400" />
+              </div>
+            ) : (
+              <div>
+                {" "}
+                {error.email && (
+                  <span className="text-red-400">{error.email}</span>
                 )}
               </div>
+            )}
+          </div>
+          <span className="text-red-400  flex justify-center pt-5">
+            {resetStatus}
+          </span>
+          <br />
+          <div>
+            <Button text={`Reset password`} onClick={handleSubmit} />
+          </div>
+          <div className="flex justify-center pt-5 pb-10">
+            <Link
+              to="/signin"
+              className="font-semibold hover:underline hover:text-blue-600 pl-2"
+            >
+              Return to sign in
+            </Link>
+          </div>
+        </div>
+      </div>
+      {/* Popup content */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+          <div className="bg-white py-10 px-10 rounded-xl shadow-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <h2 className="flex justify-center text-3xl font-semibold">
+              Done!
+            </h2>
+            <br />
+            <div className="flex bg-green-100 p-3">
+              {" "}
+              <CheckCircleIcon className="text-green-400" />
+              <p> We’ve sent an email to {data.email} with instructions.</p>
+            </div>
 
-              <div className="pt-5">
-                <Button text={`Reset password`} onClick={handleReset} />
-              </div>
-
-              <Link
-                to="/signin"
-                className="flex items-center justify-center hover:underline hover:text-blue-600 pt-4 pb-10"
-              >
-                <p>Return to sign in</p>
+            <p className="text-xs">
+              If the email doesn't show up soon, check your spam folder. We sent
+              it from email@login.online-books.com.
+            </p>
+            <div className="pt-10">
+              {" "}
+              <Link to={"/signin"}>
+                <Button text={`Return to sign in`} />
               </Link>
             </div>
           </div>
-        </div>
-      ) : (
-        <div>
-          {showMessage ? (
-            <div className="flex flex-col items-center justify-center py-20">
-              <Link to="/" className="flex items-center justify-center">
-                <img
-                  src={require("../icons/logo.png")}
-                  alt="logo"
-                  className="w-10"
-                />
-                <span className="text-blue-600 font-semibold text-4xl ml-2">
-                  Online Books
-                </span>
-              </Link>
-              <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                  <div>
-                    <CheckCircleOutlineIcon
-                      className="text-green-400"
-                      style={{ fontSize: 50 }}
-                    />
-                  </div>
-                  <h1 className="text-green-400 pt-2">
-                    We’ve sent an email to <p className="underline">{email}</p>{" "}
-                    with instructions.
-                  </h1>
-                  <Link
-                    to="/signin"
-                    className="flex items-center justify-center hover:underline hover:text-blue-600 pt-4"
-                  >
-                    <p>Return to sign in</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20">
-              <Link to="/" className="flex items-center justify-center">
-                <img
-                  src={require("../icons/logo.png")}
-                  alt="logo"
-                  className="w-10"
-                />
-                <span className="text-blue-600 font-semibold text-4xl ml-2">
-                  Online Books
-                </span>
-              </Link>
-
-              <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                  <h1 className="text-2xl font-semibold flex justify-center items-center pb-5">
-                    Reset your password
-                  </h1>
-                  <p className="pb-5">
-                    If the account exists, we'll email you instructions to reset
-                    the password.
-                  </p>
-                  <label className="block mb-2 ">Your email</label>
-                  <div className="relative">
-                    <Input
-                      type="email"
-                      name="email"
-                      required
-                      autoComplete="on"
-                      placeholder="name@domain.com"
-                      onChange={handleChange}
-                    ></Input>
-                    {isValid ? (
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <CheckIcon className="h-5 w-5 text-green-400" />
-                      </div>
-                    ) : (
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="pt-5">
-                    <Button text={`Reset password`} onClick={handleReset} />
-                  </div>
-
-                  <Link
-                    to="/signin"
-                    className="flex items-center justify-center hover:underline hover:text-blue-600 pt-4 pb-10"
-                  >
-                    <p>Return to sign in</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>

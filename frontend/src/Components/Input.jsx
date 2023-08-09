@@ -1,5 +1,4 @@
 const Input = ({
-  className,
   type,
   name,
   placeholder,

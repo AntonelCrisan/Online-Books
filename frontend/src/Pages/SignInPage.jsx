@@ -1,20 +1,35 @@
 import Input from "../Components/Input";
 import Button from "../Components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckIcon from "@mui/icons-material/Check";
-import Validation from "../Components/LoginValidation";
+import Validation from "../Components/InputsValidation";
+import axios from "axios";
 export default function SignInPage() {
+  const navigation = useNavigate();
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState({});
-  const handleSubmit = (event) => {
+  const [signInStatus, setSignInStatus] = useState("");
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-   setError(Validation(data));
-  }
-  const handleInput = (event) => {
-    setData(prev => ({...prev, [event.target.name]: [event.target.value]}));
-  }
+    try {
+      await axios.post("http://localhost:8080/signin", data).then((res) => {
+        if (res.data.message) {
+          setSignInStatus(res.data.message);
+        } else {
+          navigation("/");
+        }
+      });
+    } catch (error) {
+      console.log("Erorr: ", error);
+    }
+  };
+  const handleInput = (field, value) => {
+    const newData = { ...data, [field]: value };
+    setData(newData);
+    setError(Validation(data));
+  };
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <Link to="/" className="flex items-center justify-center">
@@ -37,22 +52,23 @@ export default function SignInPage() {
               required
               autoComplete="on"
               placeholder="name@company.com"
-              onChange={handleInput}
+              onChange={(e) => handleInput(e.target.name, e.target.value)}
             />
 
-            {error ? (
+            {error.email === true ? (
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                 <CheckIcon className="h-5 w-5 text-green-400" />
               </div>
             ) : (
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
+              <div>
+                {" "}
+                {error.email && (
+                  <span className="text-red-400">{error.email}</span>
+                )}
               </div>
             )}
           </div>
-          {error && (
-            <span className="text-red-400">{error}</span>
-          )}
+
           <div className="pt-5">
             <label className="block mb-2 ">Password</label>
             <div className="relative">
@@ -62,21 +78,22 @@ export default function SignInPage() {
                 required
                 autoComplete="on"
                 placeholder="••••••••"
-                onChange={handleInput}
+                onChange={(e) => handleInput(e.target.name, e.target.value)}
               ></Input>
-              {error ? (
+              {error.password === true ? (
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <CheckIcon className="h-5 w-5 text-green-400" />
                 </div>
               ) : (
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                  <ErrorOutlineIcon className="h-5 w-5 text-red-400" />
+                <div>
+                  {error.password && (
+                    <span className="text-red-400">{error.password}</span>
+                  )}
                 </div>
               )}
             </div>
-            {error && (<span className="text-red-400">{error}</span>)}
           </div>
-          <div class="flex items-center justify-between pt-5">
+          <div class="flex items-center justify-between pt-5 pb-5">
             <div className="flex items-start">
               <div className="flex items-center h-5">
                 <input
@@ -98,6 +115,11 @@ export default function SignInPage() {
               Forgot password?
             </a>
           </div>
+
+          <span className="text-red-400  flex justify-center">
+            {signInStatus}
+          </span>
+
           <div className="pt-5">
             <Button text={`Sign in`} onClick={handleSubmit} />
           </div>
