@@ -1,7 +1,6 @@
 import Input from "../Components/Input";
 import Button from "../Components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 import Validation from "../Components/InputsValidation";
 import axios from "axios";
@@ -16,13 +15,17 @@ export default function SignUpPage() {
   const [registerStatus, setRegisterStatus] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email_pattern.test(data.email)) {
+      error.email = "Invalid Email format!";
+      return;
+    } 
     try {
       await axios.post("http://localhost:8080/signup", data).then((res) => {
-        if (res.data.message) {
-          setRegisterStatus(res.data.message);
+        if (res.data.Status === "Success") {
+          navigate("/login");
         } else {
-          console.log("Account created successfully!");
-          navigate("/signin");
+          setRegisterStatus(res.data.message);
         }
       });
     } catch (error) {
@@ -51,7 +54,7 @@ export default function SignUpPage() {
             </h1>
             <div className="pb-5">
               <label className="block mb-2 ">Name</label>
-              <div className="relative">
+              <div>
                 <Input
                   type="text"
                   name="name"
@@ -59,24 +62,26 @@ export default function SignUpPage() {
                   autoComplete="on"
                   placeholder="Tom Cruise"
                   onChange={(e) => handleInput(e.target.name, e.target.value)}
+                  border={
+                    error.name === true && !registerStatus
+                      ? "border-green-400"
+                      : "border-red-400"
+                  }
                 ></Input>
-                {error.name === true ? (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <CheckIcon className="h-5 w-5 text-green-400" />
-                  </div>
-                ) : (
-                  <div>
-                    {" "}
-                    {error.name && (
-                      <span className="text-red-400">{error.name}</span>
-                    )}
-                  </div>
-                )}
+
+                <div>
+                  {" "}
+                  {error.name && (
+                    <span className="text-red-400 flex justify-center">
+                      {error.name}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <div className="pb-5">
               <label className="block mb-2 ">Your email</label>
-              <div className="relative">
+              <div>
                 <Input
                   type="email"
                   name="email"
@@ -84,24 +89,26 @@ export default function SignUpPage() {
                   autoComplete="on"
                   placeholder="name@company.com"
                   onChange={(e) => handleInput(e.target.name, e.target.value)}
+                  border={
+                    error.email === true && !registerStatus
+                      ? "border-green-400"
+                      : "border-red-400"
+                  }
                 ></Input>
-                {error.email === true ? (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <CheckIcon className="h-5 w-5 text-green-400" />
-                  </div>
-                ) : (
-                  <div>
-                    {" "}
-                    {error.email && (
-                      <span className="text-red-400">{error.email}</span>
-                    )}
-                  </div>
-                )}
+
+                <div>
+                  {" "}
+                  {error.email && (
+                    <span className="text-red-400 flex justify-center">
+                      {error.email}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <div className="pb-5">
               <label className="block mb-2 ">Password</label>
-              <div className="relative">
+              <div>
                 <Input
                   type="password"
                   name="password"
@@ -109,19 +116,21 @@ export default function SignUpPage() {
                   autoComplete="on"
                   placeholder="••••••••"
                   onChange={(e) => handleInput(e.target.name, e.target.value)}
+                  border={
+                    error.password === true && !registerStatus
+                      ? "border-green-400"
+                      : "border-red-400"
+                  }
                 ></Input>
-                {error.password === true ? (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <CheckIcon className="h-5 w-5 text-green-400" />
-                  </div>
-                ) : (
-                  <div>
-                    {" "}
-                    {error.password && (
-                      <span className="text-red-400">{error.password}</span>
-                    )}
-                  </div>
-                )}
+
+                <div>
+                  {" "}
+                  {error.password && (
+                    <span className="text-red-400 flex text-center">
+                      {error.password}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <span className="text-red-400  flex justify-center">
@@ -133,10 +142,10 @@ export default function SignUpPage() {
             <div className="flex pb-10">
               <p>Already have an account?</p>
               <Link
-                to="/signin"
+                to="/login"
                 className="font-semibold hover:underline hover:text-blue-600 pl-2"
               >
-                Sign in
+                Log in
               </Link>
             </div>
           </div>
