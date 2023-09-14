@@ -158,7 +158,7 @@ app.post("/forgot-password", async (req, res) => {
           </body>
         
         </html>`;
-        const resend = new Resend("re_N8UaQkzx_DqkHyxqvbQEnNkjNjDefQCE7");
+        const resend = new Resend(process.env.RESRESEND_API_KEY);
         resend.emails.send({
           from: "onboarding@resend.dev",
           to: email,
