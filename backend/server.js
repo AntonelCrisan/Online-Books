@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import { randomBytes } from "crypto";
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(
@@ -16,12 +17,12 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-
+dotenv.config();
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "online_books",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 // Test the database connection
