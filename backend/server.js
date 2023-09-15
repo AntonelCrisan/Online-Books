@@ -201,7 +201,6 @@ app.post(`/reset-password/:token`, async (req, res) => {
   }
 });
 // Start the server
-const PORT = 8080;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server started on port ${process.env.PORT}`);
 });
