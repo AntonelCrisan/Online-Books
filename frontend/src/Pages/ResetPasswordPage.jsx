@@ -30,7 +30,7 @@ export default function ResetPasswordLinkPage() {
 
     try {
       await axios
-        .post(`http://localhost:8080/reset-password/${token}`, userData)
+        .put(`http://localhost:8080/reset-password/${token}`, userData)
         .then((res) => {
           if (res.data.message) {
             setResetStatus(res.data.message);
@@ -56,7 +56,7 @@ export default function ResetPasswordLinkPage() {
   };
   return (
     <div>
-      <div className="flex flex-col items-center justify-center py-20">
+      <div className="flex flex-col items-center justify-center py-20 relative mx-4">
         <Link to="/" className="flex items-center justify-center">
           <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
           <span className="text-blue-600 font-semibold text-4xl ml-2">

@@ -21,17 +21,16 @@ export default function LogInPage() {
         }
       });
     } catch (error) {
-      console.log("Erorr: ", error);
+      alert("Erorr: ", error);
     }
   };
   const handleInput = (field, value) => {
     const newData = { ...data, [field]: value };
     setData(newData);
     setError(Validation(data));
-
   };
   return (
-    <div className="flex flex-col items-center justify-center py-20">
+    <div className="flex flex-col items-center justify-center py-20 relative mx-4">
       <Link to="/" className="flex items-center justify-center">
         <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
         <span className="text-blue-600 font-semibold text-4xl ml-2">
@@ -39,8 +38,8 @@ export default function LogInPage() {
         </span>
       </Link>
 
-      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex flex-col min-h-full flex-1 items-center justify-center mx-auto border-2  rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <h1 className="text-2xl font-semibold flex justify-center pb-5">
             Log in to your account
           </h1>
@@ -55,14 +54,18 @@ export default function LogInPage() {
               value={data}
               onChange={(e) => handleInput(e.target.name, e.target.value)}
               border={
-                error.email === true && !loginStatus ? "border-green-400" : "border-red-400"
+                error.email === true && !loginStatus
+                  ? "border-green-400"
+                  : "border-red-400"
               }
             />
-              <div>
-                {error.email && (
-                  <span className="text-red-400 flex justify-center pt-2">{error.email}</span>
-                )}
-              </div>
+            <div>
+              {error.email && (
+                <span className="text-red-400 flex justify-center pt-2">
+                  {error.email}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="pt-5">
@@ -74,6 +77,7 @@ export default function LogInPage() {
                 required
                 autoComplete="on"
                 placeholder="••••••••"
+                value={data}
                 onChange={(e) => handleInput(e.target.name, e.target.value)}
                 border={
                   error.password === true && !loginStatus
@@ -81,34 +85,22 @@ export default function LogInPage() {
                     : "border-red-400"
                 }
               ></Input>
-                <div>
-                  {error.password && (
-                    <span className="text-red-400 flex justify-center pt-2 text-center">{error.password}</span>
-                  )}
-                </div>
+              <div>
+                {error.password && (
+                  <span className="text-red-400 flex justify-center pt-2 text-center">
+                    {error.password}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-          <div class="flex items-center justify-between pt-5 pb-5">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="remember"
-                  aria-describedby="remember"
-                  type="checkbox"
-                  required
-                  className="cursor-pointer"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label for="remember">Remember me</label>
-              </div>
-            </div>
-            <a
-              href="/forgot-password"
+          <div class="pt-5 flex justify-center">
+            <Link
+              to={"/forgot-password"}
               className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500  hover:text-blue-600"
             >
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <span className="text-red-400  flex justify-center">

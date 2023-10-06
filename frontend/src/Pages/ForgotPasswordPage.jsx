@@ -33,15 +33,15 @@ export default function ResetPasswordPae() {
     setError(Validation(data));
   };
   return (
-    <div className="flex flex-col items-center justify-center py-20">
+    <div className="flex flex-col items-center justify-center py-20 relative mx-4">
       <Link to="/" className="flex items-center justify-center">
         <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
         <span className="text-blue-600 font-semibold text-4xl ml-2">
           Online Books
         </span>
       </Link>
-      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl  mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl mt-10 w-[350px] sm:w-auto lg:w-[350px]">
+        <div className="mt-10">
           <h1 className="text-2xl font-semibold flex justify-center pb-5">
             Forgot password
           </h1>
@@ -89,7 +89,7 @@ export default function ResetPasswordPae() {
       {/* Popup content */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-          <div className="bg-white py-10 px-10 rounded-xl shadow-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="bg-white py-10 px-10 rounded-xl shadow-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm relative mx-4">
             <h2 className="flex justify-center text-3xl font-semibold">
               Done!
             </h2>

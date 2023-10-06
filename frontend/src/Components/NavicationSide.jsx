@@ -11,10 +11,10 @@ import Input from "../Components/Input";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "../Components/Button";
 import axios from "axios";
-export default function NavicationSide({width = "w-full", mid_screen = "md:w-full", long_screen = "lg:w-80", block, hidden}) {
+export default function NavicationSide({width = "w-full", mid_screen = "md:w-80", long_screen = "lg:w-80", block, hidden}) {
   const [logedIn, setLogedIn] = useState(false);
   const [name, setName] = useState("");
-  const [manageData, setManageData] = useState(false);
+  const [isOpenManageData, setisOpenManageData] = useState(false);
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -36,17 +36,22 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
       }
     });
   };
-  const handleManageData = () => {
-    setManageData(!manageData);
+  const openMangeData = () => {
+    setisOpenManageData(true);
+    navigate("#edit-personal-details");
+  };
+  const closeManageData = () => {
+    setisOpenManageData(false);
+    navigate("/profile");
   };
   return (
     <div>
       {logedIn && (
         <aside className={`absolute top-24 ${width} ${mid_screen} ${long_screen} ${block} ${hidden} h-auto p-3 shadow-2xl border-2 rounded-xl bg-white`}>
-          <Link to={'/profile'}>
+          <Link to={'/profile/#edit-personal-details'}>
           <div
             className="flex items-center space-x-3 mb-3 border-b-2 pb-3 cursor-pointer"
-            onClick={handleManageData}
+            onClick={openMangeData}
           >
             <img
               src={require("../icons/profile_user.png")}
@@ -72,7 +77,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
             </li>
             <li className="mb-2">
               <Link
-                to={"/history/orders"}
+                to={"/orders"}
                 className="flex justify-between items-center space-x-1 p-2 border-b-2 hover:bg-slate-100"
               >
                 <div className="flex space-x-1">
@@ -84,7 +89,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
             </li>
             <li className="mb-2">
               <Link
-                to={"/"}
+                to={"/reviews"}
                 className="flex justify-between items-center space-x-1 p-2 border-b-2 hover:bg-slate-100"
               >
                 <div className="flex space-x-1">
@@ -96,7 +101,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
             </li>
             <li className="mb-2">
               <Link
-                to={"/"}
+                to={"/addresses"}
                 className="flex justify-between items-center space-x-1 p-2 border-b-2 hover:bg-slate-100"
               >
                 <div className="flex space-x-1">
@@ -136,12 +141,12 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
         </aside>
       )}
       {/* manage data */}
-      {manageData && (
+      {isOpenManageData && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-          <div className="bg-white py-10 px-10 rounded-xl shadow-md mt-10 relative md:w-full lg:w-[460px] w-full">
+           <div className="bg-white py-10 px-10 rounded-xl shadow-md  md:w-[460px] lg:w-[460px] w-full relative mx-4">
             <CloseIcon
               className="cursor-pointer absolute top-3 right-3 hover:scale-110"
-              onClick={handleManageData}
+              onClick={closeManageData}
             />
             <h2 className="flex justify-center text-xl font-semibold">
               Manage the datas
@@ -170,7 +175,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-ful
               />
             </div>
             <label>Date of birth:</label>
-            <div className="flex flex-row justify-between pb-5 space-x-2">
+            <div className="sm:flex sm:flex-row justify-between pb-5 sm:space-x-2 space-y-1 flex flex-col">
               <select className="border-2 border-gray rounded-xl p-1 focus:border-blue-600">
                 <option value="Day">Day</option>
                 <option value="1">1</option>

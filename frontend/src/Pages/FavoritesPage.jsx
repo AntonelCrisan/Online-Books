@@ -33,7 +33,7 @@ export default function FavoritesPage() {
     <div>
       {/* Navbar */}
       <Navbar onSearch={handleSearch} />
-      <div className="mr-3 ml-3">
+      <div className="relative mx-4">
       
         {logedIn ? (
           <div>
@@ -45,7 +45,7 @@ export default function FavoritesPage() {
               block="lg:block"
             />
                      {/* favorite section */}
-            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-362px)] left-3 md:left-3 lg:left-[350px]">
+            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-362px)]  lg:left-[350px]">
               <div className="flex items-center space-x-3 pt-5 border-b-2 pb-3">
                 <h3 className="text-xl font-semibold">Favorites</h3>
                 <label>0 products</label>
@@ -67,9 +67,9 @@ export default function FavoritesPage() {
             </div>
           </div>
         ) : (
-            <div className="md:relative md:top-24  md:flex md:flex-row lg:space-x-10 md:space-x-10 ">
+            <div className="md:relative md:flex md:flex-row lg:space-x-10 md:space-x-10 pt-24">
                 {/* sidebar for login or signup if you are not connected */}
-          <div className="w-full md:w-64 lg:w-80 h-auto p-3 shadow-2xl border-2 rounded-xl bg-white ">
+          <div className="w-full md:w-64 lg:w-80 h-auto p-3 shadow-2xl border-2 rounded-xl bg-white">
               <div className="flex flex-col items-center space-y-3 pt-5 pb-5 text-center">
                 <img
                   src={require("../icons/user.png")}
@@ -91,7 +91,7 @@ export default function FavoritesPage() {
               </div>
             </div>
             {/* favorites section */}
-            <div className="md:w-[calc(100%-362px)] h-auto p-3 shadow-2xl border-2 rounded-xl bg-white mt-5 md:mt-0 lg:mt-0">
+            <div className="md:w-[calc(100%-362px)] h-auto p-3 shadow-2xl border-2 rounded-xl bg-white mt-5 md:mt-0 lg:mt-0 mb-10 md:mb-0 lg:mb-0">
               <div className="flex items-center space-x-3 pt-5 border-b-2 pb-3">
                 <h3 className="text-xl font-semibold">Favorites</h3>
                 <label>0 products</label>
@@ -102,10 +102,10 @@ export default function FavoritesPage() {
                   className="text-blue-600"
                   fontSize="large"
                 ></FavoriteBorderIcon>
-                <label className="text-xl text-center  whitespace-nowrap">
+                <label className="text-xl text-center">
                   Hmm, no product in your list!
                 </label>
-                <label className="text-xl text-center  whitespace-nowrap">
+                <label className="text-xl text-center">
                   Here are some recommendations that could inspire you.
                 </label>
                 <Link to={"/"}>

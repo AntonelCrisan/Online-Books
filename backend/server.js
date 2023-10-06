@@ -11,7 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["POST, GET"],
+    methods: ["POST, GET, PUT"],
     credentials: true,
   })
 );
@@ -70,13 +70,15 @@ const verifyUser = (req, res, next) => {
       } else {
         req.name = decode.name;
         req.email = decode.email;
+        req.phone = decode.phone;
+        req.id = decode.id;
         next();
       }
     });
   }
 };
 app.get("/", verifyUser, (req, res) => {
-  return res.json({ Status: "Success", name: req.name, email: req.email });
+  return res.json({ Status: "Success", name: req.name, email: req.email, phone: req.phone, id: req.id });
 });
 app.get("/logout", (req, res) => {
   res.clearCookie("token");
@@ -100,7 +102,8 @@ app.post("/login", async (req, res) => {
       const name = result[0].name;
       const email = result[0].email;
       const id = result[0].id;
-      const token = jwt.sign({ name, email }, "our-jsonwebtoken-secret-key", {
+      const phone = result[0].phone;
+      const token = jwt.sign({ name, email,phone, id }, "our-jsonwebtoken-secret-key", {
         expiresIn: "1d",
       });
       res.cookie("token", token);
@@ -116,7 +119,7 @@ app.post("/forgot-password", async (req, res) => {
   const email = req.body.email;
   const token = randomBytes(20).toString("hex");
 
-  const sql = "SELECT * FROM users WHERE email = ?";
+  const sql = "SELECT email FROM users WHERE email = ?";
   if (!email) {
     return res.json({ message: "Please enter an email!" });
   }
@@ -173,7 +176,7 @@ app.post("/forgot-password", async (req, res) => {
   });
 });
 
-app.post(`/reset-password/:token`, async (req, res) => {
+app.put(`/reset-password/:token`, async (req, res) => {
   const token = req.params.token;
   const password = req.body.password;
   let email;
@@ -200,7 +203,43 @@ app.post(`/reset-password/:token`, async (req, res) => {
     res.status(500).json({ message: "Something went wrong!" });
   }
 });
+// app.get("/profile/change-number/:id"), async(req, res) => {
+//     const id = req.params.id;
+//     const sql = "SELECT * FROM users";
+//     db.query(sql, id, (err, result) => {
+//       if (err) {
+//         console.error('Database query error:', err);
+//         res.status(500).send('Error fetching user');
+//       }else{
+//         if (result.length === 0) {
+//           return res.json({message: "User not found!"});
+//         }else{
+//           const user = result[0];
+//           res.json(user);
+//         }
+//       }
+//     })
+// }
+app.put("/profile/:id"), async(req, res) => {
+  const phone = req.body.phone;
+  const id = req.params.id;
+  if(phone === ""){
+    res.json({message: "Enter your phone number!"});
+  }
+    const values = [phone, id];
+    const sql = 'UPDATE users SET phone = ? WHERE id = ?';
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error('Database update error:', err);
+        res.status(500).send('Error updating user');
+      } else {
+        console.log('User updated successfully');
+        res.json({Status: 'Success'});
+      }
+    });
+
+}
 // Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server started on port ${process.env.PORT}`);
+app.listen(8080, () => {
+  console.log(`Server started on port 8080`);
 });

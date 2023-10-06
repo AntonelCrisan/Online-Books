@@ -38,7 +38,7 @@ export default function SignUpPage() {
     setError(Validation(data));
   };
   return (
-    <div>
+    <div className="relative mx-4">
       <div className="flex flex-col items-center justify-center py-20">
         <Link to="/" className="flex items-center justify-center">
           <img src={require("../icons/logo.png")} alt="logo" className="w-10" />
