@@ -40,7 +40,7 @@ const Navbar = ({ onSearch }) => {
       if (res.data.Status === "Success") {
         navigate("/login");
       } else {
-        alert("error!");
+        return;
       }
     });
   };
@@ -70,6 +70,7 @@ const Navbar = ({ onSearch }) => {
         {/* Desktop menu */}
         <div className="hidden md:flex md:items-center  md:w-[30%] lg:w-[60%]">
           <Input
+            name = "searchBar"
             type="text"
             placeholder="Search book"
             required={false}
@@ -103,7 +104,7 @@ const Navbar = ({ onSearch }) => {
               <div>
                 {toProfile_LogOut && (
                   <div className="absolute top-[71px] right-[271px] z-10 bg-white rounded-xl w-60 border-2 p-3 shadow-lg">
-                    <label className="text-m flex pb-3">Hello, {name}</label>
+                    <div className="text-m flex pb-3">Hello, {name}</div>
                     <div className="bg-gray-200 h-1"></div>
                     <div className="flex items-center justify-evenly pt-3">
                       {" "}
@@ -126,10 +127,10 @@ const Navbar = ({ onSearch }) => {
               <div>
                 {toLogIn_SignUp && (
                   <div className="absolute top-16 right-64 z-10 bg-white rounded-xl w-60 border-gray p-3 shadow-lg">
-                    <label className="text-xs flex pb-3">
+                    <div className="text-xs flex pb-3">
                       Enter in your Online Books account and have complete
                       control over the offers.
-                    </label>
+                    </div>
                     <div className="bg-gray-200 h-1"></div>
                     <div className="flex items-center justify-evenly pt-3">
                       {" "}
@@ -164,6 +165,7 @@ const Navbar = ({ onSearch }) => {
         <div className="md:hidden mt-4 block transition ease-out overflow-hidden">
           <Input
             type="text"
+            name = "searchBar"
             placeholder="Search book"
             required={false}
             autoComplete="off"

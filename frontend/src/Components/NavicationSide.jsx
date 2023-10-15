@@ -32,7 +32,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
       if (res.data.Status === "Success") {
         navigate("/login");
       } else {
-        alert("error!");
+        return;
       }
     });
   };
@@ -46,7 +46,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
   };
   return (
     <div>
-      {logedIn && (
+      {logedIn ? (
         <aside className={`absolute top-24 ${width} ${mid_screen} ${long_screen} ${block} ${hidden} h-auto p-3 shadow-2xl border-2 rounded-xl bg-white`}>
           <Link to={'/profile/#edit-personal-details'}>
           <div
@@ -139,7 +139,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
             </li>
           </ul>
         </aside>
-      )}
+      ): null}
       {/* manage data */}
       {isOpenManageData && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
@@ -154,7 +154,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
             <br />
             <div className="">
             <div className="flex flex-col pb-5">
-              <label>Name and surname:</label>
+              <span>Name and surname:</span>
               <Input
                 type="text"
                 name="name"
@@ -164,7 +164,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
               />
             </div>
             <div className="flex flex-col pb-5">
-              <label>Alias: </label>
+              <span>Alias: </span>
               <Input
                 type="text"
                 name="name"
@@ -174,7 +174,7 @@ export default function NavicationSide({width = "w-full", mid_screen = "md:w-80"
                 border = "focus:border-blue-600"
               />
             </div>
-            <label>Date of birth:</label>
+            <span>Date of birth:</span>
             <div className="sm:flex sm:flex-row justify-between pb-5 sm:space-x-2 space-y-1 flex flex-col">
               <select className="border-2 border-gray rounded-xl p-1 focus:border-blue-600">
                 <option value="Day">Day</option>

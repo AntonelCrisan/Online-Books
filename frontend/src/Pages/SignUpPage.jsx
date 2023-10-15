@@ -3,6 +3,8 @@ import Button from "../Components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Validation from "../Components/InputsValidation";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export default function SignUpPage() {
   });
   const [error, setError] = useState({});
   const [registerStatus, setRegisterStatus] = useState("");
+  const [show_hidePassword, setShow_hidePassword] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,6 +40,9 @@ export default function SignUpPage() {
     setData(newData);
     setError(Validation(data));
   };
+  const toggleShowHide = () => {
+    setShow_hidePassword(!show_hidePassword);
+  };
   return (
     <div className="relative mx-4">
       <div className="flex flex-col items-center justify-center py-20">
@@ -53,7 +59,7 @@ export default function SignUpPage() {
               Sign up to your account
             </h1>
             <div className="pb-5">
-              <label className="block mb-2 ">Name</label>
+              <span className="block mb-2 ">Name</span>
               <div>
                 <Input
                   type="text"
@@ -80,7 +86,7 @@ export default function SignUpPage() {
               </div>
             </div>
             <div className="pb-5">
-              <label className="block mb-2 ">Your email</label>
+              <span className="block mb-2 ">Your email</span>
               <div>
                 <Input
                   type="email"
@@ -107,10 +113,23 @@ export default function SignUpPage() {
               </div>
             </div>
             <div className="pb-5">
-              <label className="block mb-2 ">Password</label>
+            <div className="flex justify-between">
+            <span className="block mb-2 ">Password</span>
+            <span onClick={toggleShowHide}>
+              {!show_hidePassword ? (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityIcon fontSize="small" /> Show
+                </span>
+              ) : (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityOffIcon fontSize="small" /> Hide
+                </span>
+              )}
+            </span>
+            </div>
               <div>
                 <Input
-                  type="password"
+                  type={!show_hidePassword ? "password":"text"}
                   name="password"
                   required={true}
                   autoComplete="on"

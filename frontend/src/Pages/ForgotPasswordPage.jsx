@@ -40,7 +40,7 @@ export default function ResetPasswordPae() {
           Online Books
         </span>
       </Link>
-      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl mt-10 w-[350px] sm:w-auto lg:w-[350px]">
+      <div className="flex flex-col min-h-full flex-1  items-center justify-center mx-auto border-2 rounded-xl px-10 bg-white shadow-2xl mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="mt-10">
           <h1 className="text-2xl font-semibold flex justify-center pb-5">
             Forgot password
@@ -49,7 +49,7 @@ export default function ResetPasswordPae() {
             If the account exists, we'll email you instructions to reset the
             password.
           </h1>
-          <label className="block mb-2">Email</label>
+          <span className="block mb-2">Email</span>
           <div className="relative">
             <Input
               type="email"

@@ -44,11 +44,11 @@ export default function FavoritesPage() {
               long_screen={"lg:w-80"}
               block="lg:block"
             />
-                     {/* favorite section */}
-            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-362px)]  lg:left-[350px]">
+            {/* favorite section */}
+            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-330px)]  lg:left-[330px]">
               <div className="flex items-center space-x-3 pt-5 border-b-2 pb-3">
                 <h3 className="text-xl font-semibold">Favorites</h3>
-                <label>0 products</label>
+                <span>0 products</span>
               </div>
 
               <div className="pt-24 flex flex-col items-center space-y-3 pb-5">
@@ -56,10 +56,10 @@ export default function FavoritesPage() {
                   className="text-blue-600"
                   fontSize="large"
                 ></FavoriteBorderIcon>
-                <label className="text-xl">Hmm, no product in your list!</label>
-                <label className="text-xl">
+                <span className="text-xl">Hmm, no product in your list!</span>
+                <span className="text-xl">
                   Here are some recommendations that could inspire you.
-                </label>
+                </span>
                 <Link to={"/"}>
                   <Button text={"See product"}></Button>
                 </Link>
@@ -91,10 +91,10 @@ export default function FavoritesPage() {
               </div>
             </div>
             {/* favorites section */}
-            <div className="md:w-[calc(100%-362px)] h-auto p-3 shadow-2xl border-2 rounded-xl bg-white mt-5 md:mt-0 lg:mt-0 mb-10 md:mb-0 lg:mb-0">
+            <div className="md:w-[calc(100%-330px)] h-auto p-3 shadow-2xl border-2 rounded-xl bg-white mt-5 md:mt-0 lg:mt-0 mb-10 md:mb-0 lg:mb-0">
               <div className="flex items-center space-x-3 pt-5 border-b-2 pb-3">
                 <h3 className="text-xl font-semibold">Favorites</h3>
-                <label>0 products</label>
+                <span>0 products</span>
               </div>
 
               <div className="pt-24 flex flex-col items-center space-y-3 pb-5">
@@ -102,12 +102,12 @@ export default function FavoritesPage() {
                   className="text-blue-600"
                   fontSize="large"
                 ></FavoriteBorderIcon>
-                <label className="text-xl text-center">
+                <span className="text-xl text-center">
                   Hmm, no product in your list!
-                </label>
-                <label className="text-xl text-center">
+                </span>
+                <span className="text-xl text-center">
                   Here are some recommendations that could inspire you.
-                </label>
+                </span>
                 <Link to={"/"}>
                   <Button text={"See product"}></Button>
                 </Link>

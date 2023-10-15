@@ -33,7 +33,7 @@ export default function ReviewPage() {
               block="lg:block"
             />
                      {/* favorite section */}
-            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-362px)]  lg:left-[350px]">
+            <div className="absolute top-24 h-auto px-10 pb-5 shadow-2xl border-2 rounded-xl bg-white w-full md:w-full lg:w-[calc(100%-330px)]  lg:left-[330px]">
               <div className="flex items-center space-x-3 pt-5 border-b-2 pb-3">
                 <h3 className="text-xl font-semibold">Reviews</h3>
                 <label>0 reviews</label>

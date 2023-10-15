@@ -4,6 +4,8 @@ import Input from "../Components/Input";
 import { useState } from "react";
 import Validation from "../Components/InputsValidation";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 export default function ResetPasswordLinkPage() {
@@ -12,6 +14,8 @@ export default function ResetPasswordLinkPage() {
   const [error, setError] = useState({});
   const [resetStatus, setResetStatus] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [show_hidePassword, setShow_hidePassword] = useState(false);
+  const [show_hideConfirmPassword, setShow_hideConfirmPassword] = useState(false);
   const userData = {
     password: data.password,
     token: token,
@@ -54,6 +58,12 @@ export default function ResetPasswordLinkPage() {
     setData(newData);
     setError(Validation(data));
   };
+  const toggleShowHide = () => {
+    setShow_hidePassword(!show_hidePassword);
+  };
+  const toggleShowHideConfirm = () => {
+    setShow_hideConfirmPassword(!show_hideConfirmPassword);
+  };
   return (
     <div>
       <div className="flex flex-col items-center justify-center py-20 relative mx-4">
@@ -68,10 +78,23 @@ export default function ResetPasswordLinkPage() {
             <h1 className="text-2xl font-semibold flex justify-center pb-5">
               Reset your password
             </h1>
-            <label className="block mb-2">New password</label>
+            <div className="flex justify-between">
+            <span className="block mb-2 ">Password</span>
+            <span onClick={toggleShowHide}>
+              {!show_hidePassword ? (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityIcon fontSize="small" /> Show
+                </span>
+              ) : (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityOffIcon fontSize="small" /> Hide
+                </span>
+              )}
+            </span>
+            </div>
             <div className="relative">
               <Input
-                type="password"
+                type={!show_hidePassword ? "password": "text"}
                 name="password"
                 required
                 autoComplete="on"
@@ -91,10 +114,23 @@ export default function ResetPasswordLinkPage() {
               </div>
             </div>
             <br />
-            <label className="block mb-2 ">Confirm new password</label>
+            <div className="flex justify-between">
+            <span className="block mb-2 ">Confirm password</span>
+            <span onClick={toggleShowHideConfirm}>
+              {!show_hideConfirmPassword ? (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityIcon fontSize="small" /> Show
+                </span>
+              ) : (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityOffIcon fontSize="small" /> Hide
+                </span>
+              )}
+            </span>
+            </div>
             <div className="relative">
               <Input
-                type="password"
+               type={!show_hideConfirmPassword ? "password": "text"}
                 name="cPassword"
                 required
                 autoComplete="on"

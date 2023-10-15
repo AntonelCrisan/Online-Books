@@ -4,11 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Validation from "../Components/InputsValidation";
 import axios from "axios";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 export default function LogInPage() {
   const navigation = useNavigate();
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState({});
   const [loginStatus, setloginStatus] = useState("");
+  const [show_hidePassword, setShow_hidePassword] = useState(false);
   axios.defaults.withCredentials = true;
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,13 +24,16 @@ export default function LogInPage() {
         }
       });
     } catch (error) {
-      alert("Erorr: ", error);
+      console.log("Error: ", error);
     }
   };
   const handleInput = (field, value) => {
     const newData = { ...data, [field]: value };
     setData(newData);
     setError(Validation(data));
+  };
+  const toggleShowHide = () => {
+    setShow_hidePassword(!show_hidePassword);
   };
   return (
     <div className="flex flex-col items-center justify-center py-20 relative mx-4">
@@ -43,7 +49,7 @@ export default function LogInPage() {
           <h1 className="text-2xl font-semibold flex justify-center pb-5">
             Log in to your account
           </h1>
-          <label className="block mb-2 ">Email</label>
+          <span className="block mb-2 ">Email</span>
           <div className="relative">
             <Input
               type="email"
@@ -69,10 +75,24 @@ export default function LogInPage() {
           </div>
 
           <div className="pt-5">
-            <label className="block mb-2 ">Password</label>
+            <div className="flex justify-between">
+            <span className="block mb-2 ">Password</span>
+            <span onClick={toggleShowHide}>
+              {!show_hidePassword ? (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityIcon fontSize="small" /> Show
+                </span>
+              ) : (
+                <span className="cursor-pointer text-sm">
+                  <VisibilityOffIcon fontSize="small" /> Hide
+                </span>
+              )}
+            </span>
+            </div>
+           
             <div className="relative">
               <Input
-                type="password"
+                type= {!show_hidePassword ? "password": "text"}
                 name="password"
                 required
                 autoComplete="on"
@@ -94,7 +114,8 @@ export default function LogInPage() {
               </div>
             </div>
           </div>
-          <div class="pt-5 flex justify-center">
+
+          <div className="pt-5 flex justify-center">
             <Link
               to={"/forgot-password"}
               className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500  hover:text-blue-600"
